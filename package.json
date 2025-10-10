@@ -1,0 +1,18 @@
+{
+  "name": "qa-dojo-7-practice-vine",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "Olena Kobzar",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {},
+  "dependencies": {
+    "express": "^5.1.0",
+    "qa-dojo-7-practice-vine": "^1.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.1",
+    "@types/node": "^24.6.2"
+  }
+}
