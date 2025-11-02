@@ -33,7 +33,7 @@ test.describe(`@register Sign up. Negative`, () => {
     await page.locator(`input[placeholder='Password']`).fill(password);
 
     //await page.getByRole('button', { name: 'Sign up' }).click(); // .button.btn.btn-lg
-    await page.locator(`.button.btn.btn-lg`).click();
+    await page.locator(`button.btn.btn-lg`).click();
     //await expect(page.getByRole("heading")).toContainText("Sign up"); //
     await expect(page.locator(`h1.text-xs-center`)).toBeVisible();
     await expect(page.locator(`.error-messages`)).toBeVisible();
@@ -46,7 +46,8 @@ test.describe(`@register Sign up. Negative`, () => {
   });
 
   test(`Empty fields. LWD-002`, async ({ page }) => {
-    await page.getByRole("button", { name: "Sign up" }).click();
+    //await page.getByRole("button", { name: "Sign up" }).click();
+    await page.locator(`button.btn.btn-lg`).click();
     await expect(page.locator(`.error-messages`)).toContainText(
       `username can't be blank`
     );
@@ -132,7 +133,7 @@ test.describe(`@register Sign up. Positive`, () => {
 //});
 
 //test.describe(`login`, () => {
-test.describe(`@login Create an org. Negative`, () => {
+test.describe.skip(`@login Create an org. Negative`, () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("https://demo.learnwebdriverio.com/login");
     await expect(page.getByRole("heading")).toContainText("Sign in");
@@ -141,7 +142,7 @@ test.describe(`@login Create an org. Negative`, () => {
   test(``, async () => {});
 });
 
-test.describe(`@login Create an org. Positive`, () => {
+test.describe.skip(`@login Create an org. Positive`, () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("https://demo.learnwebdriverio.com/login");
     await expect(page.getByRole("heading")).toContainText("Sign in");
