@@ -34,15 +34,15 @@ export default defineConfig({
     ['list'],
   ],
 
-  timeout: 30 * 1000,
+  timeout: 120 * 1000,
   expect: {
-    timeout: 3000,
+    timeout: 12000,
   },
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'on',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
@@ -54,7 +54,7 @@ export default defineConfig({
       testMatch: '**/coffee-cart/**/*.spec.ts',
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: 'https://coffee-cart.app', // Замініть на реальний URL
+        baseURL: 'https://coffee-cart.app',
       },
     },
     {
@@ -70,7 +70,22 @@ export default defineConfig({
       testMatch: '**/learnwebdriverto/**/*.spec.ts',
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: 'https://demo.learnwebdriverio.com', // Замініть на реальний URL
+        baseURL: 'https://demo.learnwebdriverio.com',
+      },
+    },
+    {
+      name: 'functions',
+      testMatch: '**/functions/**/*.spec.ts',
+      use: {
+        ...devices['Desktop Chrome'],
+      },
+    },
+    {
+      name: 'cyclesConduit',
+      testMatch: '**/cyclesConduit/**/*.spec.ts',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'https://demo.learnwebdriverio.com',
       },
     },
 
