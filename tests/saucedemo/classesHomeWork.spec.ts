@@ -1,3 +1,5 @@
+import { test, expect } from '@playwright/test';
+import { LoginPage, TestData, InventoryPage } from './classes';
 /*
 домашня робота:
 Створіть класи для сторінок сайту https://www.saucedemo.com/
@@ -39,3 +41,15 @@ https://www.saucedemo.com/checkout-step-one.html
  -------------------
 навколо цих класів напишіть 3-5 тестів на ваш вибір.
 */
+
+test('Login with valid user', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const inventoryPage = new InventoryPage(page);
+  const user = TestData.getValidUser();
+
+  await loginPage.open();
+  await loginPage.login(user.username, user.password);
+  console.log(user.username, user.password);
+  await expect(inventoryPage.inventoryContainer).toBeVisible();
+  await inventoryPage.logout();
+});

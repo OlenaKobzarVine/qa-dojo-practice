@@ -34,9 +34,9 @@ export default defineConfig({
     ['list'],
   ],
 
-  timeout: 120 * 1000,
+  timeout: 3 * 1000,
   expect: {
-    timeout: 12000,
+    timeout: 3000,
   },
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -49,6 +49,14 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
+    {
+      name: 'saucedemo-chrome',
+      testDir: './tests/saucedemo',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'https://www.saucedemo.com/',
+      },
+    },
     {
       name: 'coffee-cart',
       testMatch: '**/coffee-cart/**/*.spec.ts',
