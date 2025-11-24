@@ -5,13 +5,13 @@ import { LoginPage, TestData, InventoryPage } from './classes';
 Створіть класи для сторінок сайту https://www.saucedemo.com/
 
 
-сторінка логін повинна мати методи для того щоб зайти в сайт
++ сторінка логін повинна мати методи для того щоб зайти в сайт
 https://www.saucedemo.com/
 
 сторінка inventory повинна мати методи
 https://www.saucedemo.com/inventory.html
 
-1) addToCartByTitle()
++ 1) addToCartByTitle()
 2) removeFromCartByTitle()
 3) getPriceByTitle()
 ... подумайте що ще можна додати
@@ -52,4 +52,19 @@ test('Login with valid user', async ({ page }) => {
   console.log(user.username, user.password);
   await expect(inventoryPage.inventoryContainer).toBeVisible();
   await inventoryPage.logout();
+});
+
+test('Add products to cart', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const inventoryPage = new InventoryPage(page);
+  const user = TestData.getValidUser();
+
+  await loginPage.navigateTo('/');
+  await loginPage.login(user.username, user.password);
+
+  await inventoryPage.addProductToCart(TestData.PRODUCTS.BACKPACK);
+  await inventoryPage.addProductToCart(TestData.PRODUCTS.BIKE_LIGHT);
+
+  const cartCount = await inventoryPage.getCartProductsCount();
+  expect(cartCount).toBe(2);
 });

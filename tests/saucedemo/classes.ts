@@ -20,18 +20,12 @@ export class LoginPage extends BasePage {
   readonly userNameInput: Locator;
   readonly passwordInput: Locator;
   readonly loginButton: Locator;
-  readonly errorMessage: Locator;
-  readonly credentialsContainer: Locator;
-  readonly passwordContainer: Locator;
 
   constructor(page: Page) {
     super(page);
     this.userNameInput = page.locator('#user-name');
     this.passwordInput = page.locator('#password');
     this.loginButton = page.locator('#login-button');
-    this.errorMessage = page.locator('[data-test="error"]');
-    this.credentialsContainer = page.locator('#login_credentials');
-    this.passwordContainer = page.locator('.login_password');
   }
 
   async open() {
@@ -43,47 +37,77 @@ export class LoginPage extends BasePage {
     await this.passwordInput.fill(password);
     await this.loginButton.click();
   }
-
-  async isErrorDisplayed(): Promise<boolean> {
-    return await this.errorMessage.isVisible();
-  }
-
-  async getErrorText(): Promise<string> {
-    return (await this.errorMessage.textContent()) || '';
-  }
-
-  async clearInputs() {
-    await this.userNameInput.clear();
-    await this.passwordInput.clear();
-  }
 }
 
 export class InventoryPage extends BasePage {
   readonly inventoryContainer: Locator;
-  readonly inventoryItems: Locator;
-  readonly shoppingCart: Locator;
   readonly cartBadge: Locator;
   readonly burgerMenu: Locator;
   readonly logoutLink: Locator;
-  readonly sortDropdown: Locator;
-  readonly pageTitle: Locator;
 
   constructor(page: Page) {
     super(page);
     this.inventoryContainer = page.locator('.inventory_container');
-    this.inventoryItems = page.locator('.inventory_item');
-    this.shoppingCart = page.locator('.shopping_cart_link');
     this.cartBadge = page.locator('.shopping_cart_badge');
     this.burgerMenu = page.locator('#react-burger-menu-btn');
     this.logoutLink = page.locator('#logout_sidebar_link');
-    this.sortDropdown = page.locator('[data-test="product-sort-container"]');
-    this.pageTitle = page.locator('.title');
+  }
+
+  /*
+1) addToCartByTitle()
+2) removeFromCartByTitle()
+3) getPriceByTitle()
+  */
+
+  async getProductByName(productName: string) {
+    return this.page.locator(`.inventory_item:has-text("${productName}")`);
+  }
+
+  async addProductToCart(productName: string) {
+    const product = await this.getProductByName(productName);
+    await product.locator('button:has-text("Add to cart")').click();
+  }
+
+  async removeProductFromCart(productName: string) {
+    const product = await this.getProductByName(productName);
+    await product.locator('button:has-text("Remove")').click();
+  }
+
+  async getCartProductsCount() {
+    const isVisible = await this.cartBadge.isVisible();
+    if (!isVisible) return 0;
+
+    const text = await this.cartBadge.textContent();
+    return parseInt(text || '0'); // falsy
   }
 
   async logout() {
     await this.burgerMenu.click();
     await this.logoutLink.click();
   }
+}
+
+export class CartPage extends BasePage {
+  readonly AAA = Locator;
+  readonly AAA = Locator;
+  readonly AAA = Locator;
+  readonly AAA = Locator;
+  readonly AAA = Locator;
+
+  constructor(page: Page) {
+    super(page);
+    this.AAA = page.locator('');
+    this.AAA = page.locator('');
+    this.AAA = page.locator('');
+    this.AAA = page.locator('');
+    this.AAA = page.locator('');
+  }
+  /*
+  1) removeFromCartByTitle()
+  2) getPriceByTitle()
+  3) checkout()
+  4) continueShopping()
+  */
 }
 
 export class TestData {
@@ -95,6 +119,15 @@ export class TestData {
   static readonly VISUAL_USER = 'visual_user';
 
   static readonly PASSWORD = 'secret_sauce';
+
+  static readonly PRODUCTS = {
+    BACKPACK: 'Sauce Labs Backpack',
+    BIKE_LIGHT: 'Sauce Labs Bike Light',
+    BOLT_TSHIRT: 'Sauce Labs Bolt T-Shirt',
+    FLEECE_JACKET: 'Sauce Labs Fleece Jacket',
+    ONESIE: 'Sauce Labs Onesie',
+    TSHIRT_RED: 'Test.allTheThings() T-Shirt (Red)',
+  };
 
   static getValidUser() {
     return {
