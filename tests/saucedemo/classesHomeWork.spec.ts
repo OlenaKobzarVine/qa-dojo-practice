@@ -1,5 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage, TestData, InventoryPage } from './classes';
+import { BasePage } from './BasePage';
+import { TestData } from './TestData';
+import { LoginPage } from './LoginPage';
+import { InventoryPage } from './InventoryPage';
+import { CartPage } from './CartPage';
+
 /*
 домашня робота:
 Створіть класи для сторінок сайту https://www.saucedemo.com/
@@ -67,4 +72,30 @@ test('Add products to cart', async ({ page }) => {
 
   const cartCount = await inventoryPage.getCartProductsCount();
   expect(cartCount).toBe(2);
+});
+
+test('Delete products from cart', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const inventoryPage = new InventoryPage(page);
+  const user = TestData.getValidUser();
+  const products = Object.values(TestData.PRODUCTS);
+
+  await loginPage.navigateTo('/');
+  await loginPage.login(user.username, user.password);
+
+  for (const product of products) {
+    await inventoryPage.addProductToCart(product);
+  }
+
+  const cartCount = await inventoryPage.getCartProductsCount();
+  console.log(cartCount);
+  expect(cartCount).toBe(products.length);
+
+  for (const product of products) {
+    await inventoryPage.removeProductFromCart(product);
+  }
+
+  const emptyCartCount = await inventoryPage.getCartProductsCount();
+  console.log(emptyCartCount);
+  expect(emptyCartCount).toBe(0);
 });
