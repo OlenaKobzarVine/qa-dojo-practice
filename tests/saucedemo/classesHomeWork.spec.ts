@@ -4,6 +4,7 @@ import { TestData } from './TestData';
 import { LoginPage } from './LoginPage';
 import { InventoryPage } from './InventoryPage';
 import { CartPage } from './CartPage';
+import { CheckoutPage } from './CheckoutPage';
 
 /*
 домашня робота:
@@ -98,4 +99,34 @@ test('Delete products from cart', async ({ page }) => {
   const emptyCartCount = await inventoryPage.getCartProductsCount();
   console.log(emptyCartCount);
   expect(emptyCartCount).toBe(0);
+});
+
+test('Calculate the cost of the order', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const inventoryPage = new InventoryPage(page);
+  const cartPage = new CartPage(page);
+  const user = TestData.getValidUser();
+  const products = Object.values(TestData.PRODUCTS);
+
+  await loginPage.navigateTo('/');
+  await loginPage.login(user.username, user.password);
+
+  for (const product of products) {
+    await inventoryPage.addProductToCart(product);
+  }
+
+  const cartCount = await inventoryPage.getCartProductsCount();
+  console.log(cartCount);
+  expect(cartCount).toBe(products.length);
+
+  await inventoryPage.openCart();
+
+  let totalPrice = 0;
+  for (const product of products) {
+    let productPrice = await cartPage.getPriceByTitle(product);
+    totalPrice = totalPrice + productPrice;
+  }
+
+  console.log(totalPrice);
+  expect(totalPrice).toBe(129.94);
 });
