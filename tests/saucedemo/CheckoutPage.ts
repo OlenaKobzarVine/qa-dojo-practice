@@ -1,23 +1,38 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
+import { CheckoutPageLocators } from './CheckoutPageLocators';
 
 export class CheckoutPage extends BasePage {
-  readonly firstName: Locator;
-  readonly lastName: Locator;
-  readonly postalCode: Locator;
-  readonly cancelBtn: Locator;
-  readonly continue: Locator;
+  readonly locators: CheckoutPageLocators;
+
+  // readonly firstName: Locator;
+  // readonly lastName: Locator;
+  // readonly postalCode: Locator;
+  // readonly cancelBtn: Locator;
+  // readonly continue: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.firstName = page.locator('#first-name');
-    this.lastName = page.locator('#last-name');
-    this.postalCode = page.locator('#postal-code');
-    this.cancelBtn = page.locator('#cancel');
-    this.continue = page.locator('#continue');
+    this.locators = new CheckoutPageLocators(page);
+    //   this.firstName = page.locator('#first-name');
+    //   this.lastName = page.locator('#last-name');
+    //   this.postalCode = page.locator('#postal-code');
+    //   this.cancelBtn = page.locator('#cancel');
+    //   this.continue = page.locator('#continue');
   }
 
-  async fillInRequiredFields() {}
+  async fillInRequiredFields(
+    firstName: string,
+    lastName: string,
+    postalCode: string
+  ) {
+    await this.locators.firstNameInput.fill(firstName);
+    await this.locators.lastNameInput.fill(lastName);
+    await this.locators.postalCodeInput.fill(postalCode);
+    await this.locators.continueBtn.click();
+  }
+
   async cancelCheckoutPage() {}
+
   async continueCheckout() {}
 }

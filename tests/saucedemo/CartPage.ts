@@ -2,20 +2,17 @@ import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class CartPage extends BasePage {
-  readonly cartList: Locator;
-  readonly checkoutBtn: Locator;
-  readonly continueShoppingBtn: Locator;
-  // readonly AAA = Locator;
-  // readonly AAA = Locator;
+  private cartList = this.page.locator('.cart_list');
+  private checkoutBtn = this.page.locator('#checkout');
+  private continueShoppingBtn = this.page.locator('#continue-shopping');
+  private cartBadge = this.page.locator('.shopping_cart_badge');
 
-  constructor(page: Page) {
-    super(page);
-    this.cartList = page.locator('.cart_list');
-    this.checkoutBtn = page.locator('#checkout');
-    this.continueShoppingBtn = page.locator('#continue-shopping');
-    // this.AAA = page.locator('');
-    // this.AAA = page.locator('');
-  }
+  // constructor(page: Page) {
+  //   super(page);
+  //   this.cartList = page.locator('.cart_list');
+  //   this.checkoutBtn = page.locator('#checkout');
+  //   this.continueShoppingBtn = page.locator('#continue-shopping');
+  // }
   /*
   1) removeFromCartByTitle()
   2) getPriceByTitle()
@@ -23,7 +20,7 @@ export class CartPage extends BasePage {
   4) continueShopping()
   */
 
-  async getProductByName(productName: string) {
+  private async getProductByName(productName: string) {
     return this.page.locator(`.cart_item:has-text("${productName}")`);
   }
 
@@ -32,6 +29,14 @@ export class CartPage extends BasePage {
     const priceText =
       (await product.locator('.inventory_item_price').textContent()) || '';
     return parseFloat(priceText.replace('$', '') || '0');
+  }
+
+  async getCartProductsCount() {
+    const isVisible = await this.cartBadge.isVisible();
+    if (!isVisible) return 0;
+
+    const text = await this.cartBadge.textContent();
+    return parseInt(text || '0'); // falsy
   }
 
   async checkout() {
