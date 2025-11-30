@@ -6,7 +6,7 @@ export interface User {
 }
 
 export class BasePage {
-  readonly page: Page;
+  protected page: Page;
 
   constructor(page: Page) {
     this.page = page;

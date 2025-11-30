@@ -6,6 +6,7 @@ export class InventoryPage extends BasePage {
   readonly cartBadge: Locator;
   readonly burgerMenu: Locator;
   readonly logoutLink: Locator;
+  readonly shoppingCart: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -13,6 +14,7 @@ export class InventoryPage extends BasePage {
     this.cartBadge = page.locator('.shopping_cart_badge');
     this.burgerMenu = page.locator('#react-burger-menu-btn');
     this.logoutLink = page.locator('#logout_sidebar_link');
+    this.shoppingCart = page.locator('.shopping_cart_link');
   }
 
   /*
@@ -20,6 +22,9 @@ export class InventoryPage extends BasePage {
 2) removeFromCartByTitle()
 3) getPriceByTitle()
   */
+  async openCart() {
+    await this.shoppingCart.click();
+  }
 
   async getProductByName(productName: string) {
     return this.page.locator(`.inventory_item:has-text("${productName}")`);

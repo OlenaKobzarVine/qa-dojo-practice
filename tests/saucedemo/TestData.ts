@@ -8,6 +8,10 @@ export class TestData {
 
   static readonly PASSWORD = 'secret_sauce';
 
+  static readonly FIRST_NAME = 'TEST_FIRST_NAME';
+  static readonly LAST_NAME = 'TEST_FIRST_NAME';
+  static readonly POSTAL_CODE = '18777';
+
   static readonly PRODUCTS = {
     BACKPACK: 'Sauce Labs Backpack',
     BIKE_LIGHT: 'Sauce Labs Bike Light',
@@ -21,6 +25,14 @@ export class TestData {
     return {
       username: this.STANDARD_USER,
       password: this.PASSWORD,
+    };
+  }
+
+  static getRequiredData() {
+    return {
+      firstName: this.FIRST_NAME,
+      lastName: this.LAST_NAME,
+      postalCode: this.POSTAL_CODE,
     };
   }
 }

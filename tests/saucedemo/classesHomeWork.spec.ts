@@ -4,6 +4,7 @@ import { TestData } from './TestData';
 import { LoginPage } from './LoginPage';
 import { InventoryPage } from './InventoryPage';
 import { CartPage } from './CartPage';
+import { CheckoutPage } from './CheckoutPage';
 
 /*
 домашня робота:
@@ -50,9 +51,10 @@ https://www.saucedemo.com/checkout-step-one.html
 test('Login with valid user', async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
+
   const user = TestData.getValidUser();
 
-  await loginPage.open();
+  await loginPage.navigateTo('/');
   await loginPage.login(user.username, user.password);
   console.log(user.username, user.password);
   await expect(inventoryPage.inventoryContainer).toBeVisible();
@@ -62,6 +64,7 @@ test('Login with valid user', async ({ page }) => {
 test('Add products to cart', async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
+
   const user = TestData.getValidUser();
 
   await loginPage.navigateTo('/');
@@ -74,9 +77,10 @@ test('Add products to cart', async ({ page }) => {
   expect(cartCount).toBe(2);
 });
 
-test('Delete products from cart', async ({ page }) => {
+test('Delete products from cart on Inventory Page', async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
+
   const user = TestData.getValidUser();
   const products = Object.values(TestData.PRODUCTS);
 
@@ -98,4 +102,97 @@ test('Delete products from cart', async ({ page }) => {
   const emptyCartCount = await inventoryPage.getCartProductsCount();
   console.log(emptyCartCount);
   expect(emptyCartCount).toBe(0);
+});
+
+test('Calculate the cost of the order on Cart Page', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const inventoryPage = new InventoryPage(page);
+  const cartPage = new CartPage(page);
+
+  const user = TestData.getValidUser();
+  const products = Object.values(TestData.PRODUCTS);
+
+  await loginPage.navigateTo('/');
+  await loginPage.login(user.username, user.password);
+
+  for (const product of products) {
+    await inventoryPage.addProductToCart(product);
+  }
+
+  const cartCount = await inventoryPage.getCartProductsCount();
+  console.log(cartCount);
+  expect(cartCount).toBe(products.length);
+
+  await inventoryPage.openCart();
+
+  let totalPrice = 0;
+  for (const product of products) {
+    let productPrice = await cartPage.getPriceByTitle(product);
+    totalPrice = totalPrice + productPrice;
+  }
+
+  console.log(totalPrice);
+  expect(totalPrice).toBe(129.94);
+});
+
+test('Delete products from cart on Cart Page', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const inventoryPage = new InventoryPage(page);
+  const cartPage = new CartPage(page);
+
+  const user = TestData.getValidUser();
+  const products = Object.values(TestData.PRODUCTS);
+
+  await loginPage.navigateTo('/');
+  await loginPage.login(user.username, user.password);
+
+  for (const product of products) {
+    await inventoryPage.addProductToCart(product);
+  }
+
+  const cartCount = await inventoryPage.getCartProductsCount();
+  console.log(`cartCount: ${cartCount}`);
+  expect(cartCount).toBe(products.length);
+
+  await inventoryPage.openCart();
+
+  for (const product of products) {
+    await cartPage.removeFromCartByTitle(product);
+  }
+
+  const emptyCartCount = await cartPage.getCartProductsCount();
+  console.log(`emptyCartCount: ${emptyCartCount}`);
+  expect(emptyCartCount).toBe(0);
+});
+
+test('Fill in required checkout fields and continue', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const inventoryPage = new InventoryPage(page);
+  const cartPage = new CartPage(page);
+  const checkoutPage = new CheckoutPage(page);
+
+  const user = TestData.getValidUser();
+  const products = Object.values(TestData.PRODUCTS);
+
+  await loginPage.navigateTo('/');
+  await loginPage.login(user.username, user.password);
+
+  for (const product of products) {
+    await inventoryPage.addProductToCart(product);
+  }
+
+  const cartCount = await inventoryPage.getCartProductsCount();
+  console.log(`cartCount: ${cartCount}`);
+  expect(cartCount).toBe(products.length);
+
+  await inventoryPage.openCart();
+  await cartPage.checkout();
+
+  const requiredData = TestData.getRequiredData();
+  await checkoutPage.fillInRequiredFields(
+    requiredData.firstName,
+    requiredData.lastName,
+    requiredData.postalCode
+  );
+  await expect(page).toHaveURL(/checkout-step-two.html/);
 });

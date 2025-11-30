@@ -50,8 +50,8 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'saucedemo-chrome',
-      testDir: './tests/saucedemo',
+      name: 'saucedemo',
+      testMatch: '**/saucedemo/**/*.spec.ts',
       use: {
         ...devices['Desktop Chrome'],
         baseURL: 'https://www.saucedemo.com/',
