@@ -1,5 +1,5 @@
-import { Page, Locator } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { Page } from '@playwright/test';
+import { BasePage } from '../BasePage/BasePage';
 import { CheckoutPageLocators } from './CheckoutPageLocators';
 
 export class CheckoutPage extends BasePage {
@@ -13,7 +13,7 @@ export class CheckoutPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.locators = new CheckoutPageLocators(page);
+    this.locators = new CheckoutPageLocators(page.locator('#contents_wrapper'));
     //   this.firstName = page.locator('#first-name');
     //   this.lastName = page.locator('#last-name');
     //   this.postalCode = page.locator('#postal-code');
@@ -21,14 +21,14 @@ export class CheckoutPage extends BasePage {
     //   this.continue = page.locator('#continue');
   }
 
-  async fillInRequiredFields(
-    firstName: string,
-    lastName: string,
-    postalCode: string
-  ) {
-    await this.locators.firstNameInput.fill(firstName);
-    await this.locators.lastNameInput.fill(lastName);
-    await this.locators.postalCodeInput.fill(postalCode);
+  async fillInRequiredFields(requiredData: {
+    firstName: string;
+    lastName: string;
+    postalCode: string;
+  }) {
+    await this.locators.firstNameInput.fill(requiredData.firstName);
+    await this.locators.lastNameInput.fill(requiredData.lastName);
+    await this.locators.postalCodeInput.fill(requiredData.postalCode);
     await this.locators.continueBtn.click();
   }
 

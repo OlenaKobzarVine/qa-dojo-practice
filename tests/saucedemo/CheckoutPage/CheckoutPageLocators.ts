@@ -1,5 +1,5 @@
 import { Locator } from '@playwright/test';
-import { BaseLocators } from './BaseLocators';
+import { BaseLocators } from '../BasePage/BaseLocators';
 
 export class CheckoutPageLocators extends BaseLocators {
   readonly firstNameInput: Locator = this.baseLocator.locator('#first-name');
