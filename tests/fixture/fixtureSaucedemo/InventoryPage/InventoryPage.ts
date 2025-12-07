@@ -66,7 +66,7 @@ export class InventoryPage extends BasePage {
   }
 
   async logout() {
-    await this.locators.burgerMenu.click();
-    await this.locators.logoutLink.click();
+    await this.locators.burgerMenu.click({ delay: 1000 });
+    await this.locators.logoutLink.click({ delay: 1000 });
   }
 }

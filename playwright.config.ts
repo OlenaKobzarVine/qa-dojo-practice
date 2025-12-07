@@ -34,7 +34,8 @@ export default defineConfig({
     ['list'],
   ],
 
-  timeout: 3 * 1000,
+  // Global test timeout (tests + teardown). Increased to 30s to allow teardown actions.
+  timeout: 30 * 1000,
   expect: {
     timeout: 3000,
   },
@@ -94,6 +95,14 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         baseURL: 'https://demo.learnwebdriverio.com',
+      },
+    },
+    {
+      name: 'fixture',
+      testMatch: '**/fixture/**/*.spec.ts',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'https://www.saucedemo.com/',
       },
     },
 
