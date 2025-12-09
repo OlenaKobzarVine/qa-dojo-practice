@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { test } from './MyFixture';
 import { TestData } from './TestData';
 import { LoginPage } from './LoginPage/LoginPage';
 import { InventoryPage } from './InventoryPage/InventoryPage';
@@ -47,28 +48,32 @@ https://www.saucedemo.com/checkout-step-one.html
 навколо цих класів напишіть 3-5 тестів на ваш вибір.
 */
 
-test('Login with valid user', { tag: ['@LoginPage'] }, async ({ page }) => {
-  const loginPage = new LoginPage(page);
-  const inventoryPage = new InventoryPage(page);
+test(
+  'Login with valid user',
+  { tag: ['@LoginPage'] },
+  async ({ inventoryPage }) => {
+    // const loginPage = new LoginPage(page);
+    // const inventoryPage = new InventoryPage(page);
 
-  const user = TestData.getValidUser();
+    // const user = TestData.getValidUserData();
 
-  await loginPage.navigateTo('/');
-  await loginPage.login(user.username, user.password);
-  await expect(inventoryPage.locators.inventoryContainer).toBeVisible();
-});
+    // await loginPage.navigateTo('/');
+    // await loginPage.login(user.username, user.password);
+    await expect(inventoryPage.locators.inventoryContainer).toBeVisible();
+  }
+);
 
 test(
   'Add products to cart on Inventory Page',
   { tag: ['@LoginPage', '@InventoryPage'] },
-  async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
+  async ({ inventoryPage }) => {
+    // const loginPage = new LoginPage(page);
+    // const inventoryPage = new InventoryPage(page);
 
-    const user = TestData.getValidUser();
+    // const user = TestData.getValidUser();
 
-    await loginPage.navigateTo('/');
-    await loginPage.login(user.username, user.password);
+    // await loginPage.navigateTo('/');
+    // await loginPage.login(user.username, user.password);
 
     await inventoryPage.addProductToCart(TestData.products.backpack);
     await inventoryPage.addProductToCart(TestData.products.bikeLight);
@@ -81,15 +86,15 @@ test(
 test(
   'Delete products from cart on Inventory Page',
   { tag: ['@LoginPage', '@InventoryPage'] },
-  async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
+  async ({ inventoryPage }) => {
+    // const loginPage = new LoginPage(page);
+    // const inventoryPage = new InventoryPage(page);
 
-    const user = TestData.getValidUser();
+    // const user = TestData.getValidUserData();
     const products = Object.values(TestData.products);
 
-    await loginPage.navigateTo('/');
-    await loginPage.login(user.username, user.password);
+    // await loginPage.navigateTo('/');
+    // await loginPage.login(user.username, user.password);
 
     for (const product of products) {
       await inventoryPage.addProductToCart(product);
@@ -112,16 +117,16 @@ test(
 test(
   'Calculate the cost of the order on Cart Page',
   { tag: ['@LoginPage', '@InventoryPage', '@CartPage'] },
-  async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-    const cartPage = new CartPage(page);
+  async ({ inventoryPage, cartPage }) => {
+    // const loginPage = new LoginPage(page);
+    // const inventoryPage = new InventoryPage(page);
+    // const cartPage = new CartPage(page);
 
-    const user = TestData.getValidUser();
+    // const user = TestData.getValidUserData();
     const products = Object.values(TestData.products);
 
-    await loginPage.navigateTo('/');
-    await loginPage.login(user.username, user.password);
+    // await loginPage.navigateTo('/');
+    // await loginPage.login(user.username, user.password);
 
     for (const product of products) {
       await inventoryPage.addProductToCart(product);
@@ -147,16 +152,16 @@ test(
 test(
   'Delete products from cart on Cart Page',
   { tag: ['@LoginPage', '@InventoryPage', '@CartPage'] },
-  async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-    const cartPage = new CartPage(page);
+  async ({ inventoryPage, cartPage }) => {
+    // const loginPage = new LoginPage(page);
+    // const inventoryPage = new InventoryPage(page);
+    // const cartPage = new CartPage(page);
 
-    const user = TestData.getValidUser();
+    // const user = TestData.getValidUserData();
     const products = Object.values(TestData.products);
 
-    await loginPage.navigateTo('/');
-    await loginPage.login(user.username, user.password);
+    // await loginPage.navigateTo('/');
+    // await loginPage.login(user.username, user.password);
 
     for (const product of products) {
       await inventoryPage.addProductToCart(product);
@@ -181,17 +186,17 @@ test(
 test(
   'Fill in required checkout fields and continue',
   { tag: ['@LoginPage', '@InventoryPage', '@CartPage', '@CheckoutPage'] },
-  async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    const inventoryPage = new InventoryPage(page);
-    const cartPage = new CartPage(page);
-    const checkoutPage = new CheckoutPage(page);
+  async ({ inventoryPage, cartPage, checkoutPage, page }) => {
+    // const loginPage = new LoginPage(page);
+    // const inventoryPage = new InventoryPage(page);
+    // const cartPage = new CartPage(page);
+    // const checkoutPage = new CheckoutPage(page);
 
-    const user = TestData.getValidUser();
+    // const user = TestData.getValidUserData();
     const products = Object.values(TestData.products);
 
-    await loginPage.navigateTo('/');
-    await loginPage.login(user.username, user.password);
+    // await loginPage.navigateTo('/');
+    // await loginPage.login(user.username, user.password);
 
     for (const product of products) {
       await inventoryPage.addProductToCart(product);
