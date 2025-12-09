@@ -48,16 +48,20 @@ https://www.saucedemo.com/checkout-step-one.html
 навколо цих класів напишіть 3-5 тестів на ваш вибір.
 */
 
-test('Login with valid user', { tag: ['@LoginPage'] }, async ({ inventoryPage }) => {
-  // const loginPage = new LoginPage(page);
-  // const inventoryPage = new InventoryPage(page);
+test(
+  'Login with valid user',
+  { tag: ['@LoginPage'] },
+  async ({ inventoryPage }) => {
+    // const loginPage = new LoginPage(page);
+    // const inventoryPage = new InventoryPage(page);
 
-  // const user = TestData.getValidUserData();
+    // const user = TestData.getValidUserData();
 
-  // await loginPage.navigateTo('/');
-  // await loginPage.login(user.username, user.password);
-  await expect(inventoryPage.locators.inventoryContainer).toBeVisible();
-});
+    // await loginPage.navigateTo('/');
+    // await loginPage.login(user.username, user.password);
+    await expect(inventoryPage.locators.inventoryContainer).toBeVisible();
+  }
+);
 
 test(
   'Add products to cart on Inventory Page',
@@ -148,7 +152,7 @@ test(
 test(
   'Delete products from cart on Cart Page',
   { tag: ['@LoginPage', '@InventoryPage', '@CartPage'] },
-  async ({ inventoryPage, cartPage}) => {
+  async ({ inventoryPage, cartPage }) => {
     // const loginPage = new LoginPage(page);
     // const inventoryPage = new InventoryPage(page);
     // const cartPage = new CartPage(page);

@@ -19,7 +19,7 @@ type MyFixture = {
 export const test = base.extend<MyFixture>({
   standardUserName: 'standard_user',
   //password: 'secret_sauce',
-
+/*
   page: async ({ page }, use) => {
     console.log('page');
     await use(page);
@@ -31,7 +31,7 @@ export const test = base.extend<MyFixture>({
   browser: async ({ browser }, use) => {
     console.log('browser');
     await use(browser);
-  },
+  },*/
   loginPage: async ({ page }, use) => {
     const loginPage = new LoginPage(page);
     await use(loginPage);
@@ -48,7 +48,7 @@ export const test = base.extend<MyFixture>({
     const checkoutPage = new CheckoutPage(page);
     await use(checkoutPage);
   },
-
+/*
   token: async ({}, use) => {
     const tokens = {
       access_token: 'rerererer',
@@ -58,7 +58,7 @@ export const test = base.extend<MyFixture>({
 
     await use(tokens.access_token);
   },
-
+*/
   before: [
     async ({ loginPage, standardUserName }, use) => {
       // beforeEach це все що до await use();
