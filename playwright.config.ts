@@ -1,4 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
+import * as dotenv from 'dotenv';
+import * as path from 'path';
+
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+//global.registeredArticles = [];
 
 /**
  * Read environment variables from file.
@@ -34,6 +40,9 @@ export default defineConfig({
     ['list'],
   ],
 
+  // Global setup runs once before all tests and can produce storageState.json
+  globalSetup: './globalSetup.ts',
+
   // Global test timeout (tests + teardown). Increased to 30s to allow teardown actions.
   timeout: 30 * 1000,
   expect: {
@@ -50,6 +59,14 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
+    {
+      name: 'api',
+      testMatch: '**/api/**/*.spec.ts',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: process.env.BASEURL,
+      },
+    },
     {
       name: 'saucedemo',
       testMatch: '**/saucedemo/**/*.spec.ts',
@@ -75,8 +92,8 @@ export default defineConfig({
       },
     },
     {
-      name: 'learnwebdriverto',
-      testMatch: '**/learnwebdriverto/**/*.spec.ts',
+      name: 'learnWebDriverio',
+      testMatch: '**/learnWebDriverio/**/*.spec.ts',
       use: {
         ...devices['Desktop Chrome'],
         baseURL: 'https://demo.learnwebdriverio.com',
@@ -103,6 +120,14 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         baseURL: 'https://www.saucedemo.com/',
+      },
+    },
+    {
+      name: 'cookiesCRUD',
+      testMatch: '**/cookiesCRUD/**/*.spec.ts',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'https://www.zara.com/es/en/',
       },
     },
 

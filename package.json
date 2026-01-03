@@ -8,6 +8,7 @@
   "main": "index.js",
   "scripts": {},
   "dependencies": {
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "qa-dojo-7-practice-vine": "^1.0.0"
   },

@@ -19,7 +19,7 @@ type MyFixture = {
 export const test = base.extend<MyFixture>({
   standardUserName: 'standard_user',
   //password: 'secret_sauce',
-/*
+  /*
   page: async ({ page }, use) => {
     console.log('page');
     await use(page);
@@ -48,7 +48,7 @@ export const test = base.extend<MyFixture>({
     const checkoutPage = new CheckoutPage(page);
     await use(checkoutPage);
   },
-/*
+  /*
   token: async ({}, use) => {
     const tokens = {
       access_token: 'rerererer',
@@ -67,7 +67,7 @@ export const test = base.extend<MyFixture>({
       await use();
       // afterEach це все що після await use();
     },
-    { auto: true, title: 'executing before test are finished' },
+    { auto: false, title: 'executing before test are finished' },
   ],
 
   after: [
@@ -79,6 +79,6 @@ export const test = base.extend<MyFixture>({
 
       // afterEach це все що після await use();
     },
-    { auto: true, title: 'executing after test are finished' },
+    { auto: false, title: 'executing after test are finished' },
   ],
 });
